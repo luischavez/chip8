@@ -131,4 +131,12 @@ public class Chip8 {
             java.awt.Toolkit.getDefaultToolkit().beep();
         }
     }
+
+    /**
+     * Decrementa los contadores del programa.
+     */
+    public void decrementCounters() {
+        this.register.decrementDT();
+        this.register.decrementST();
+    }
 }
