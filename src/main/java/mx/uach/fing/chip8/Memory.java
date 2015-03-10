@@ -91,7 +91,7 @@ public class Memory {
 
         // Copia la fuente en memoria.
         for (int i = 0; i < fonts.length; i++) {
-            this.ram[FONT_INIT + i] = fonts[i] & 0xFF;
+            this.ram[FONT_INIT + i] = (byte) (fonts[i] & 0xFF);
         }
     }
 
