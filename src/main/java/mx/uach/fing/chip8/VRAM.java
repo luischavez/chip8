@@ -44,7 +44,7 @@ public class VRAM {
 
     // Funcion que se aplicara cuando se cambie un pixel.
     private BufferListener listener;
-    
+
     public VRAM() {
         this.buffer = new int[BUFFER_SIZE];
     }
@@ -88,13 +88,13 @@ public class VRAM {
 
         // Verifica si se eliminara un pixel en pantalla.
         int unset = this.buffer[index] & pixel;
-        
+
         this.buffer[index] ^= pixel;
-        
+
         if (null != this.listener) {
             this.listener.onPixel(x, y, this.buffer[index]);
         }
-        
+
         return unset;
     }
 
@@ -103,6 +103,10 @@ public class VRAM {
      */
     public void clear() {
         Arrays.fill(this.buffer, (byte) 0);
+
+        if (null != this.listener) {
+            this.listener.onClear();
+        }
     }
 
     /**
@@ -149,5 +153,10 @@ public class VRAM {
          * @param pixel pixel a cambiar.
          */
         public void onPixel(int x, int y, int pixel);
+
+        /**
+         * Se activa cuando se limpia el buffer.
+         */
+        public void onClear();
     }
 }
