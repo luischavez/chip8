@@ -169,6 +169,8 @@ public class Chip8 implements Runnable {
             delta += (currentTime - lastTime);
             cycles += ((currentTime - lastTime) / 1_000.0);
 
+            lastTime = currentTime;
+
             if (1 <= cycles) {
                 cycles--;
                 this.step();
@@ -178,8 +180,6 @@ public class Chip8 implements Runnable {
                 delta -= FREQUENCY;
                 this.decrementCounters();
             }
-
-            lastTime = System.currentTimeMillis();
         }
     }
 }
