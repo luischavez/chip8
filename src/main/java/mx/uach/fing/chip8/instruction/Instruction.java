@@ -27,7 +27,6 @@ import mx.uach.fing.chip8.VRAM;
  *
  * @author UACH <http://fing.uach.mx>
  */
-@FunctionalInterface
 public interface Instruction {
 
     /**

@@ -24,14 +24,14 @@ import java.util.Arrays;
  */
 public class VRAM {
 
-    // Tamano del buffer.
-    public static final int BUFFER_SIZE = 64 * 32;
-
     // Ancho de la pantalla.
     public static final int SCREEN_WIDTH = 64;
 
     // Alto de la pantalla.
     public static final int SCREEN_HEIGHT = 32;
+
+    // Tamano del buffer.
+    public static final int BUFFER_SIZE = SCREEN_WIDTH * SCREEN_HEIGHT;
 
     // Ancho de los sprites.
     public static final int SPRITE_WIDTH = 8;
@@ -72,7 +72,7 @@ public class VRAM {
         }
 
         // Transforma el punto (x, y) en un indice de una dimension.
-        int index = SCREEN_WIDTH * y + x;
+        int index = VRAM.toIndex(x, y);
 
         // Verifica si se eliminara un pixel en pantalla.
         int unset = this.buffer[index] & pixel;
@@ -87,5 +87,36 @@ public class VRAM {
      */
     public void clear() {
         Arrays.fill(this.buffer, (byte) 0);
+    }
+
+    /**
+     * Transforma un punto (x, y) en un indice.
+     *
+     * @param x punto x.
+     * @param y punto y.
+     * @return indice.
+     */
+    public static int toIndex(int x, int y) {
+        return SCREEN_WIDTH * y + x;
+    }
+
+    /**
+     * Transforma un indice es un punto x.
+     *
+     * @param index indice.
+     * @return punto x.
+     */
+    public static int toPointX(int index) {
+        return index % VRAM.SCREEN_WIDTH;
+    }
+
+    /**
+     * Transforma un indice es un punto y.
+     *
+     * @param index indice.
+     * @return punto y.
+     */
+    public static int toPointY(int index) {
+        return index / VRAM.SCREEN_WIDTH;
     }
 }
