@@ -42,8 +42,20 @@ public class VRAM {
     // Arreglo que representa la pantalla.
     private final int[] buffer;
 
+    // Funcion que se aplicara cuando se cambie un pixel.
+    private BufferListener listener;
+    
     public VRAM() {
         this.buffer = new int[BUFFER_SIZE];
+    }
+
+    /**
+     * Establece el listener para los eventos de cambio de pixel.
+     *
+     * @param listener listener a agregar.
+     */
+    public void setListener(BufferListener listener) {
+        this.listener = listener;
     }
 
     /**
@@ -76,9 +88,13 @@ public class VRAM {
 
         // Verifica si se eliminara un pixel en pantalla.
         int unset = this.buffer[index] & pixel;
-
+        
         this.buffer[index] ^= pixel;
-
+        
+        if (null != this.listener) {
+            this.listener.onPixel(x, y, this.buffer[index]);
+        }
+        
         return unset;
     }
 
@@ -118,5 +134,20 @@ public class VRAM {
      */
     public static int toPointY(int index) {
         return index / VRAM.SCREEN_WIDTH;
+    }
+
+    /**
+     * Listener para la escucha de eventos de video.
+     */
+    public interface BufferListener {
+
+        /**
+         * Se aciva cuando se cambia un pixel en el buffer.
+         *
+         * @param x punto x.
+         * @param y punto y.
+         * @param pixel pixel a cambiar.
+         */
+        public void onPixel(int x, int y, int pixel);
     }
 }

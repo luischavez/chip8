@@ -51,21 +51,14 @@ public class Memory {
 
     public Memory() {
         this.ram = new int[MEMORY_SIZE];
-    }
 
-    /**
-     * Obtiene el indice de la primera instruccion del programa.
-     *
-     * @return indice de la primera instruccion.
-     */
-    public int getProgramIndex() {
-        return this.programIndex;
+        this.loadFont();
     }
 
     /**
      * Carga la fuente en memoria.
      */
-    public void loadFont() {
+    private void loadFont() {
         // Fuente en hexadecimal.
         char[] fonts = new char[]{
             0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -90,6 +83,15 @@ public class Memory {
         for (int i = 0; i < fonts.length; i++) {
             this.ram[FONT_INIT + i] = fonts[i] & 0xFF;
         }
+    }
+
+    /**
+     * Obtiene el indice de la primera instruccion del programa.
+     *
+     * @return indice de la primera instruccion.
+     */
+    public int getProgramIndex() {
+        return this.programIndex;
     }
 
     /**

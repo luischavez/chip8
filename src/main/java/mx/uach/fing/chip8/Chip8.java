@@ -23,7 +23,10 @@ import mx.uach.fing.chip8.instruction.InstructionSet;
  *
  * @author UACH <http://fing.uach.mx>
  */
-public class Chip8 {
+public class Chip8 implements Runnable {
+
+    // Frecuencia de actualizacion.
+    public static final int HZ = 60;
 
     // Memoria RAM del chip con 4KB de almacenamiento.
     private final Memory memory;
@@ -42,6 +45,9 @@ public class Chip8 {
 
     // Set de instrucciones del chip.
     private final InstructionSet instructionSet;
+
+    // Bandera que indica que el chip esta corriendo.
+    private boolean running = false;
 
     public Chip8() {
         this.memory = new Memory();
@@ -98,15 +104,13 @@ public class Chip8 {
     }
 
     /**
-     * Configura el chip. Guarda una rom en memoria, inicializa el set de
-     * instrucciones y establece los registros.
+     * Guarda una rom en memoria y establece el contrador del programa al inicio
+     * del programa.
      *
      * @param rom arreglo de bytes con la rom a cargar.
      */
-    public void configure(byte[] rom) {
+    public void loadMemory(byte[] rom) {
         this.memory.load(rom);
-        this.memory.loadFont();
-        this.instructionSet.sets();
         this.register.setPC(this.memory.getProgramIndex());
     }
 
@@ -138,5 +142,44 @@ public class Chip8 {
     public void decrementCounters() {
         this.register.decrementDT();
         this.register.decrementST();
+    }
+
+    /**
+     * Detiene la ejecucion del chip.
+     */
+    public void stop() {
+        this.running = false;
+    }
+
+    @Override
+    public void run() {
+        final double FREQUENCY = 1_000.0 / HZ;
+
+        double delta = 0f;
+
+        long lastTime = System.currentTimeMillis();
+        long currentTime;
+
+        double cycles = 0f;
+
+        this.running = true;
+        while (this.running) {
+            currentTime = System.currentTimeMillis();
+
+            delta += (currentTime - lastTime);
+            cycles += ((currentTime - lastTime) / 1_000.0);
+
+            if (1 <= cycles) {
+                cycles--;
+                this.step();
+            }
+
+            while (FREQUENCY <= delta) {
+                delta -= FREQUENCY;
+                this.decrementCounters();
+            }
+
+            lastTime = System.currentTimeMillis();
+        }
     }
 }

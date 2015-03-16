@@ -34,13 +34,15 @@ public class InstructionSet {
 
     public InstructionSet() {
         this.instructionMap = new HashMap<>();
+
+        this.sets();
     }
 
     /**
      * Configura el set de instrucciones, utiliza expresiones regulares para
      * identificar el tipo de instruccion.
      */
-    public void sets() {
+    private void sets() {
         // 0nnn - SYS addr
         // this.instructionMap.put(Pattern.compile("^0[0-9a-fA-F]{3}$"), new SystemAddressInstruction());
         // 00E0 - CLS
