@@ -11,12 +11,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mainClass>mx.uach.fing.chip8.gui.MainApp</mainClass>
+        <netbeans.hint.license>gpl30</netbeans.hint.license>
     </properties>
 
     <organization>
         <!-- Used as the 'Vendor' for JNLP generation -->
-        <name>Your Organisation</name>
+        <name>UACH</name>
     </organization>
 
     <build>
@@ -104,5 +104,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
