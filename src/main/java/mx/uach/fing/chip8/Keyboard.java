@@ -24,15 +24,6 @@ import java.util.function.Consumer;
  */
 public class Keyboard {
 
-    // Bandera que indica que se espera una tecla.
-    public static final boolean WAIT = true;
-
-    // Bandera que indica que no se espera una tecla.
-    public static final boolean NOT_WAIT = false;
-
-    // Bandera que indica que la tecla es nula.
-    public static final int NULL_KEY = 0xFFFF;
-
     // Estado de las teclas, de 0x0 a 0xF.
     private final boolean[] keys;
 
