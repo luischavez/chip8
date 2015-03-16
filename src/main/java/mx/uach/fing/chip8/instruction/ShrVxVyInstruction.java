@@ -36,14 +36,13 @@ public class ShrVxVyInstruction implements Instruction {
     @Override
     public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
         int x = opcode.getX();
-        int y = opcode.getY();
 
-        int vy = register.get(y);
+        int vx = register.get(x);
 
-        register.set(Register.REGISTER_FLAG, vy & 0x1);
+        register.set(Register.REGISTER_FLAG, vx & 0x1);
 
-        vy >>= 1;
+        vx >>= 1;
 
-        register.set(x, vy);
+        register.set(x, vx);
     }
 }

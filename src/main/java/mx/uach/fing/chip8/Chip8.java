@@ -25,8 +25,11 @@ import mx.uach.fing.chip8.instruction.InstructionSet;
  */
 public class Chip8 implements Runnable {
 
-    // Frecuencia de actualizacion.
-    public static final int HZ = 60;
+    // Frecuencia de actualizacion de los contadores.
+    public static final int TIMER_HZ = 60;
+
+    // Frecuencia de actualizacion del reloj.
+    public static final int UPDATE_HZ = 500;
 
     // Memoria RAM del chip con 4KB de almacenamiento.
     private final Memory memory;
@@ -153,33 +156,50 @@ public class Chip8 implements Runnable {
 
     @Override
     public void run() {
-        final double FREQUENCY = 1_000.0 / HZ;
+        final double TIMER_FREQUENCY = 1_000.0 / TIMER_HZ;
+        final double UPDATE_FREQUENCY = 1_000.0 / UPDATE_HZ;
 
         double delta = 0f;
 
         long lastTime = System.currentTimeMillis();
         long currentTime;
 
+        long timer = 0;
+
         double cycles = 0f;
+
+        int updates = 0;
+        int renders = 0;
 
         this.running = true;
         while (this.running) {
             currentTime = System.currentTimeMillis();
 
-            delta += (currentTime - lastTime);
-            cycles += ((currentTime - lastTime) / 1_000.0);
+            delta += currentTime - lastTime;
+            cycles += currentTime - lastTime;
 
-            lastTime = currentTime;
+            if (UPDATE_FREQUENCY <= cycles) {
+                updates++;
+                cycles -= UPDATE_FREQUENCY;
 
-            if (1 <= cycles) {
-                cycles--;
                 this.step();
             }
 
-            while (FREQUENCY <= delta) {
-                delta -= FREQUENCY;
+            if (TIMER_FREQUENCY <= delta) {
+                renders++;
+                delta -= TIMER_FREQUENCY;
+                this.vram().draw();
                 this.decrementCounters();
             }
+
+            timer += currentTime - lastTime;
+            if (1_000 <= timer) {
+                timer = 0;
+                updates = 0;
+                renders = 0;
+            }
+
+            lastTime = currentTime;
         }
     }
 }

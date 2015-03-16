@@ -91,10 +91,6 @@ public class VRAM {
 
         this.buffer[index] ^= pixel;
 
-        if (null != this.listener) {
-            this.listener.onPixel(x, y, this.buffer[index]);
-        }
-
         return unset;
     }
 
@@ -103,9 +99,14 @@ public class VRAM {
      */
     public void clear() {
         Arrays.fill(this.buffer, (byte) 0);
+    }
 
+    /**
+     * Solicita dibujar el buffer en pantalla.
+     */
+    public void draw() {
         if (null != this.listener) {
-            this.listener.onClear();
+            this.listener.onDraw(this.buffer);
         }
     }
 
@@ -146,17 +147,10 @@ public class VRAM {
     public interface BufferListener {
 
         /**
-         * Se aciva cuando se cambia un pixel en el buffer.
+         * Se activa cuando se solicita dibujar el contenido del buffer.
          *
-         * @param x punto x.
-         * @param y punto y.
-         * @param pixel pixel a cambiar.
+         * @param buffer buffer con el contenido a dibujar.
          */
-        public void onPixel(int x, int y, int pixel);
-
-        /**
-         * Se activa cuando se limpia el buffer.
-         */
-        public void onClear();
+        public void onDraw(int[] buffer);
     }
 }
