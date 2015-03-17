@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2015 Your Organisation
+/* 
+ * Copyright (C) 2015 UACH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,22 +16,11 @@
  */
 package mx.uach.fing.chip8;
 
-import java.util.function.Consumer;
-
 /**
  *
  * @author UACH <http://fing.uach.mx>
  */
 public class Keyboard {
-
-    // Bandera que indica que se espera una tecla.
-    public static final boolean WAIT = true;
-
-    // Bandera que indica que no se espera una tecla.
-    public static final boolean NOT_WAIT = false;
-
-    // Bandera que indica que la tecla es nula.
-    public static final int NULL_KEY = 0xFFFF;
 
     // Estado de las teclas, de 0x0 a 0xF.
     private final boolean[] keys;
@@ -40,12 +29,12 @@ public class Keyboard {
     private boolean wait;
 
     // Funcion que se aplicara cuando se encuentre una tecla.
-    private Consumer<Integer> onKeyFound;
+    private KeyListener listener;
 
     public Keyboard() {
         this.keys = new boolean[16];
         this.wait = false;
-        this.onKeyFound = null;
+        this.listener = null;
     }
 
     /**
@@ -60,11 +49,11 @@ public class Keyboard {
     /**
      * Indica que se espera por la pulsacion de una tecla.
      *
-     * @param onKeyFound funcion que se aplica cuando se pula una tecla.
+     * @param listener funcion que se aplica cuando se pula una tecla.
      */
-    public void waitKey(Consumer<Integer> onKeyFound) {
+    public void waitKey(KeyListener listener) {
         this.wait = true;
-        this.onKeyFound = onKeyFound;
+        this.listener = listener;
     }
 
     /**
@@ -84,10 +73,10 @@ public class Keyboard {
         this.keys[key] = down;
 
         // Verifica si se esta esperando por la tecla, si esta pulada la guarda.
-        if (down && this.wait && null != onKeyFound) {
+        if (down && this.wait && null != listener) {
             this.wait = false;
-            this.onKeyFound.accept(key);
-            this.onKeyFound = null;
+            this.listener.onKeyFound(key);
+            this.listener = null;
         }
     }
 
@@ -123,5 +112,18 @@ public class Keyboard {
         }
 
         return this.keys[key];
+    }
+
+    /**
+     * Listener para la escucha de eventos de teclado.
+     */
+    public interface KeyListener {
+
+        /**
+         * Se activa cuando se encuentra la pulsacion de una tecla.
+         *
+         * @param key tecla encontrada.
+         */
+        public void onKeyFound(int key);
     }
 }

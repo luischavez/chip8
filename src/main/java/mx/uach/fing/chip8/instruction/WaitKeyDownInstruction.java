@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2015 Your Organisation
+/* 
+ * Copyright (C) 2015 UACH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,9 +35,15 @@ import mx.uach.fing.chip8.VRAM;
 public class WaitKeyDownInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
-        int x = opcode.getX();
+    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, final Register register, Keyboard keyboard) {
+        final int x = opcode.getX();
 
-        keyboard.waitKey((key) -> register.set(x, key.byteValue()));
+        keyboard.waitKey(new Keyboard.KeyListener() {
+
+            @Override
+            public void onKeyFound(int key) {
+                register.set(x, key);
+            }
+        });
     }
 }

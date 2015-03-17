@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2015 Your Organisation
+/* 
+ * Copyright (C) 2015 UACH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,13 @@ import mx.uach.fing.chip8.instruction.InstructionSet;
  *
  * @author UACH <http://fing.uach.mx>
  */
-public class Chip8 {
+public class Chip8 implements Runnable {
+
+    // Frecuencia de actualizacion de los contadores.
+    public static final int TIMER_HZ = 60;
+
+    // Frecuencia de actualizacion del reloj.
+    public static final int UPDATE_HZ = 500;
 
     // Memoria RAM del chip con 4KB de almacenamiento.
     private final Memory memory;
@@ -42,6 +48,9 @@ public class Chip8 {
 
     // Set de instrucciones del chip.
     private final InstructionSet instructionSet;
+
+    // Bandera que indica que el chip esta corriendo.
+    private boolean running = false;
 
     public Chip8() {
         this.memory = new Memory();
@@ -98,15 +107,13 @@ public class Chip8 {
     }
 
     /**
-     * Configura el chip. Guarda una rom en memoria, inicializa el set de
-     * instrucciones y establece los registros.
+     * Guarda una rom en memoria y establece el contrador del programa al inicio
+     * del programa.
      *
      * @param rom arreglo de bytes con la rom a cargar.
      */
-    public void configure(byte[] rom) {
+    public void loadMemory(byte[] rom) {
         this.memory.load(rom);
-        this.memory.loadFont();
-        this.instructionSet.sets();
         this.register.setPC(this.memory.getProgramIndex());
     }
 
@@ -123,12 +130,76 @@ public class Chip8 {
 
             Instruction instruction = this.instructionSet.resolve(opcode);
 
-            System.out.printf("Address: %x, OPCode: %s, PC: %d, Instruction: %s\n", pc, opcode.toString(), pc, instruction.getClass());
+            //System.out.printf("Address: %x, OPCode: %s, PC: %d, Instruction: %s\n", pc, opcode.toString(), pc, instruction.getClass());
             instruction.execute(opcode, this.memory, this.vram, this.stack, this.register, this.keyboard);
         }
 
         if (0 < st) {
-            java.awt.Toolkit.getDefaultToolkit().beep();
+            //java.awt.Toolkit.getDefaultToolkit().beep();
+        }
+    }
+
+    /**
+     * Decrementa los contadores del programa.
+     */
+    public void decrementCounters() {
+        this.register.decrementDT();
+        this.register.decrementST();
+    }
+
+    /**
+     * Detiene la ejecucion del chip.
+     */
+    public void stop() {
+        this.running = false;
+    }
+
+    @Override
+    public void run() {
+        final double TIMER_FREQUENCY = 1_000.0 / TIMER_HZ;
+        final double UPDATE_FREQUENCY = 1_000.0 / UPDATE_HZ;
+
+        double delta = 0f;
+
+        long lastTime = System.currentTimeMillis();
+        long currentTime;
+
+        long timer = 0;
+
+        double cycles = 0f;
+
+        int updates = 0;
+        int renders = 0;
+
+        this.running = true;
+        while (this.running) {
+            currentTime = System.currentTimeMillis();
+
+            delta += currentTime - lastTime;
+            cycles += currentTime - lastTime;
+
+            if (UPDATE_FREQUENCY <= cycles) {
+                updates++;
+                cycles -= UPDATE_FREQUENCY;
+
+                this.step();
+            }
+
+            if (TIMER_FREQUENCY <= delta) {
+                renders++;
+                delta -= TIMER_FREQUENCY;
+                this.vram().draw();
+                this.decrementCounters();
+            }
+
+            timer += currentTime - lastTime;
+            if (1_000 <= timer) {
+                timer = 0;
+                updates = 0;
+                renders = 0;
+            }
+
+            lastTime = currentTime;
         }
     }
 }

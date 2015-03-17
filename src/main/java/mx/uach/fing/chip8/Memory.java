@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2015 Your Organisation
+/* 
+ * Copyright (C) 2015 UACH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,9 +40,6 @@ public class Memory {
     // Inicio de los programas en memoria, 0x200 (512).
     public static final int PROGRAM_INIT = 0x200;
 
-    // Inicio de los programas (ETI) en memoria, 0x600 (1536).
-    public static final int PROGRAM_ETI_INIT = 0x600;
-
     // Fin de los programas en memoria, 0xFFF (4095).
     public static final int PROGRAM_END = 0xFFF;
 
@@ -54,21 +51,14 @@ public class Memory {
 
     public Memory() {
         this.ram = new int[MEMORY_SIZE];
-    }
 
-    /**
-     * Obtiene el indice de la primera instruccion del programa.
-     *
-     * @return indice de la primera instruccion.
-     */
-    public int getProgramIndex() {
-        return this.programIndex;
+        this.loadFont();
     }
 
     /**
      * Carga la fuente en memoria.
      */
-    public void loadFont() {
+    private void loadFont() {
         // Fuente en hexadecimal.
         char[] fonts = new char[]{
             0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -91,8 +81,17 @@ public class Memory {
 
         // Copia la fuente en memoria.
         for (int i = 0; i < fonts.length; i++) {
-            this.ram[FONT_INIT + i] = (byte) (fonts[i] & 0xFF);
+            this.ram[FONT_INIT + i] = fonts[i] & 0xFF;
         }
+    }
+
+    /**
+     * Obtiene el indice de la primera instruccion del programa.
+     *
+     * @return indice de la primera instruccion.
+     */
+    public int getProgramIndex() {
+        return this.programIndex;
     }
 
     /**
@@ -107,9 +106,8 @@ public class Memory {
             throw new MemoryLoadException(String.format("El tamano de la ROM es demasiado grande, el tamano maximo es: %d", MAX_PROGRAM_SIZE));
         }
 
-        // Establece el tipo de programa dependiendo del tamano de los datos.
-        this.programIndex = (PROGRAM_END - PROGRAM_ETI_INIT) == data.length
-                ? PROGRAM_ETI_INIT : PROGRAM_INIT;
+        // Establece el indice del programa.
+        this.programIndex = PROGRAM_INIT;
 
         // Almacena la ROM en memoria.
         int currentIndex = this.programIndex;

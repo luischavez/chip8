@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2015 Your Organisation
+/* 
+ * Copyright (C) 2015 UACH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,14 +24,14 @@ import java.util.Arrays;
  */
 public class VRAM {
 
-    // Tamano del buffer.
-    public static final int BUFFER_SIZE = 64 * 32;
-
     // Ancho de la pantalla.
     public static final int SCREEN_WIDTH = 64;
 
     // Alto de la pantalla.
     public static final int SCREEN_HEIGHT = 32;
+
+    // Tamano del buffer.
+    public static final int BUFFER_SIZE = SCREEN_WIDTH * SCREEN_HEIGHT;
 
     // Ancho de los sprites.
     public static final int SPRITE_WIDTH = 8;
@@ -42,8 +42,20 @@ public class VRAM {
     // Arreglo que representa la pantalla.
     private final int[] buffer;
 
+    // Funcion que se aplicara cuando se cambie un pixel.
+    private BufferListener listener;
+
     public VRAM() {
         this.buffer = new int[BUFFER_SIZE];
+    }
+
+    /**
+     * Establece el listener para los eventos de cambio de pixel.
+     *
+     * @param listener listener a agregar.
+     */
+    public void setListener(BufferListener listener) {
+        this.listener = listener;
     }
 
     /**
@@ -72,7 +84,7 @@ public class VRAM {
         }
 
         // Transforma el punto (x, y) en un indice de una dimension.
-        int index = SCREEN_WIDTH * y + x;
+        int index = VRAM.toIndex(x, y);
 
         // Verifica si se eliminara un pixel en pantalla.
         int unset = this.buffer[index] & pixel;
@@ -87,5 +99,58 @@ public class VRAM {
      */
     public void clear() {
         Arrays.fill(this.buffer, (byte) 0);
+    }
+
+    /**
+     * Solicita dibujar el buffer en pantalla.
+     */
+    public void draw() {
+        if (null != this.listener) {
+            this.listener.onDraw(this.buffer);
+        }
+    }
+
+    /**
+     * Transforma un punto (x, y) en un indice.
+     *
+     * @param x punto x.
+     * @param y punto y.
+     * @return indice.
+     */
+    public static int toIndex(int x, int y) {
+        return SCREEN_WIDTH * y + x;
+    }
+
+    /**
+     * Transforma un indice es un punto x.
+     *
+     * @param index indice.
+     * @return punto x.
+     */
+    public static int toPointX(int index) {
+        return index % VRAM.SCREEN_WIDTH;
+    }
+
+    /**
+     * Transforma un indice es un punto y.
+     *
+     * @param index indice.
+     * @return punto y.
+     */
+    public static int toPointY(int index) {
+        return index / VRAM.SCREEN_WIDTH;
+    }
+
+    /**
+     * Listener para la escucha de eventos de video.
+     */
+    public interface BufferListener {
+
+        /**
+         * Se activa cuando se solicita dibujar el contenido del buffer.
+         *
+         * @param buffer buffer con el contenido a dibujar.
+         */
+        public void onDraw(int[] buffer);
     }
 }

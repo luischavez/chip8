@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2015 Your Organisation
+/* 
+ * Copyright (C) 2015 UACH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
 package mx.uach.fing.chip8.instruction;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import mx.uach.fing.chip8.OPCode;
 
@@ -34,13 +34,15 @@ public class InstructionSet {
 
     public InstructionSet() {
         this.instructionMap = new HashMap<>();
+
+        this.sets();
     }
 
     /**
      * Configura el set de instrucciones, utiliza expresiones regulares para
      * identificar el tipo de instruccion.
      */
-    public void sets() {
+    private void sets() {
         // 0nnn - SYS addr
         // this.instructionMap.put(Pattern.compile("^0[0-9a-fA-F]{3}$"), new SystemAddressInstruction());
         // 00E0 - CLS
@@ -122,16 +124,16 @@ public class InstructionSet {
      * opcode.
      */
     public Instruction resolve(OPCode opcode) throws UnknownInstructionException {
-        Stream<Map.Entry<Pattern, Instruction>> stream = this.instructionMap.entrySet().stream();
+        Iterator<Map.Entry<Pattern, Instruction>> iterator = this.instructionMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Pattern, Instruction> entry = iterator.next();
 
-        return stream.filter((entry) -> {
             Pattern pattern = entry.getKey();
+            if (pattern.matcher(opcode.toString()).matches()) {
+                return entry.getValue();
+            }
+        }
 
-            return pattern.matcher(opcode.toString()).matches();
-        }).map((entry) -> entry.getValue())
-                .findFirst()
-                .orElseThrow(() -> {
-                    return new UnknownInstructionException(String.format("No existe una instruccion para el opcode %s", opcode.toString()));
-                });
+        throw new UnknownInstructionException(String.format("No existe una instruccion para el opcode %s", opcode.toString()));
     }
 }
