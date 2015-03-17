@@ -130,12 +130,12 @@ public class Chip8 implements Runnable {
 
             Instruction instruction = this.instructionSet.resolve(opcode);
 
-            System.out.printf("Address: %x, OPCode: %s, PC: %d, Instruction: %s\n", pc, opcode.toString(), pc, instruction.getClass());
+            //System.out.printf("Address: %x, OPCode: %s, PC: %d, Instruction: %s\n", pc, opcode.toString(), pc, instruction.getClass());
             instruction.execute(opcode, this.memory, this.vram, this.stack, this.register, this.keyboard);
         }
 
         if (0 < st) {
-            java.awt.Toolkit.getDefaultToolkit().beep();
+            //java.awt.Toolkit.getDefaultToolkit().beep();
         }
     }
 
