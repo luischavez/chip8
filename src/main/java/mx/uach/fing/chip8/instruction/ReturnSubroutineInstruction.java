@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import mx.uach.fing.chip8.VRAM;
  * The interpreter sets the program counter to the address at the top of the
  * stack, then subtracts 1 from the stack pointer.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class ReturnSubroutineInstruction implements Instruction {
 

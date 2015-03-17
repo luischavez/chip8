@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import mx.uach.fing.chip8.VRAM;
 /**
  * 00E0 - CLS Clear the display.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class ClearScreenInstruction implements Instruction {
 

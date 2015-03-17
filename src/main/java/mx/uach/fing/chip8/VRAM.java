@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class VRAM {
 

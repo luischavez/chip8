@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import mx.uach.fing.chip8.VRAM;
  * If the most-significant bit of Vx is 1, then VF is set to 1, otherwise to 0.
  * Then Vx is multiplied by 2.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class ShlVxVyInstruction implements Instruction {
 

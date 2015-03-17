@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import mx.uach.fing.chip8.VRAM;
  *
  * Adds the value kk to the value of register Vx, then stores the result in Vx.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class AddVxKKInstruction implements Instruction {
 

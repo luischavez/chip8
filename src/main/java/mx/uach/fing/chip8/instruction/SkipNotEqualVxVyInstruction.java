@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import mx.uach.fing.chip8.VRAM;
  * The values of Vx and Vy are compared, and if they are not equal, the program
  * counter is increased by 2.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class SkipNotEqualVxVyInstruction implements Instruction {
 

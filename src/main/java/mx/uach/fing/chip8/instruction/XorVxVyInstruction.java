@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import mx.uach.fing.chip8.VRAM;
  * values, and if the bits are not both the same, then the corresponding bit in
  * the result is set to 1. Otherwise, it is 0.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class XorVxVyInstruction implements Instruction {
 

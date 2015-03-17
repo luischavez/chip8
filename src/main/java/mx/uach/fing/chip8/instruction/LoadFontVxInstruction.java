@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import mx.uach.fing.chip8.VRAM;
  * should be stored in the interpreter area of Chip-8 memory (0x000 to 0x1FF).
  * Below is a listing of each character's bytes, in binary and hexadecimal:
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class LoadFontVxInstruction implements Instruction {
 
