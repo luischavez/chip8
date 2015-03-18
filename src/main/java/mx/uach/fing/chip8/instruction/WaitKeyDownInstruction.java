@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ import mx.uach.fing.chip8.VRAM;
  * All execution stops until a key is pressed, then the value of that key is
  * stored in Vx.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class WaitKeyDownInstruction implements Instruction {
 

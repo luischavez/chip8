@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import mx.uach.fing.chip8.VRAM;
  * Checks the keyboard, and if the key corresponding to the value of Vx is
  * currently in the down position, PC is increased by 2.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class SkipIfKeyDownInstruction implements Instruction {
 

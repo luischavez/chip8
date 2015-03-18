@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import mx.uach.fing.chip8.VRAM;
  * The interpreter increments the stack pointer, then puts the current PC on the
  * top of the stack. The PC is then set to nnn.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class CallSubroutineInstruction implements Instruction {
 

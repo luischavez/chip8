@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2015 UACH <http://fing.uach.mx>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import mx.uach.fing.chip8.VRAM;
  * bits (i.e., > 255,) VF is set to 1, otherwise 0. Only the lowest 8 bits of
  * the result are kept, and stored in Vx.
  *
- * @author UACH <http://fing.uach.mx>
+ * @author Luis Chávez
  */
 public class AddVxVyInstruction implements Instruction {
 
