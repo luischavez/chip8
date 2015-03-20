@@ -46,7 +46,7 @@ public class SwingGUI {
     /**
      * Instancia del CHIP 8.
      */
-    private Chip8 chip8 = new Chip8();
+    private Chip8 chip8;
 
     /**
      * Listener que escuchara por los eventos del teclado.
@@ -133,8 +133,8 @@ public class SwingGUI {
     }
 
     public static void main(String[] args) {
-        SwingGUI main = new SwingGUI();
+        SwingGUI gui = new SwingGUI();
 
-        main.initialize();
+        gui.initialize();
     }
 }

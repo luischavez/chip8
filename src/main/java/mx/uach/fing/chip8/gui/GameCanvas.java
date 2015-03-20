@@ -33,6 +33,7 @@ public class GameCanvas extends JComponent {
      * Buffer donde almacenar la informacion de video actual.
      */
     private final BufferedImage screen = new BufferedImage(VRAM.SCREEN_WIDTH * 10, VRAM.SCREEN_HEIGHT * 10, BufferedImage.TYPE_USHORT_GRAY);
+
     /**
      * Instancia de la memoria de vidoe del chip actual.
      */

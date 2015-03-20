@@ -18,12 +18,16 @@ package mx.uach.fing.chip8;
 
 import mx.uach.fing.chip8.instruction.Instruction;
 import mx.uach.fing.chip8.instruction.InstructionSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Luis Chávez
  */
 public class Chip8 implements Runnable {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(Chip8.class);
 
     // Frecuencia de actualizacion de los contadores.
     public static final int TIMER_HZ = 60;
@@ -51,7 +55,7 @@ public class Chip8 implements Runnable {
 
     // Bandera que indica que el chip esta corriendo.
     private boolean running = false;
-
+    
     public Chip8() {
         this.memory = new Memory();
         this.vram = new VRAM();
@@ -113,6 +117,7 @@ public class Chip8 implements Runnable {
      * @param rom arreglo de bytes con la rom a cargar.
      */
     public void loadMemory(byte[] rom) {
+        LOGGER.debug("Loading ROM: {}", rom);
         this.memory.load(rom);
         this.register.setPC(this.memory.getProgramIndex());
     }
@@ -122,18 +127,18 @@ public class Chip8 implements Runnable {
      */
     public void step() {
         int st = this.register.getST();
-
+        
         if (!this.keyboard.isWaiting()) {
             int pc = this.register.getPC();
             OPCode opcode = this.memory.readInstruction(pc);
             this.register.incrementPC();
-
+            
             Instruction instruction = this.instructionSet.resolve(opcode);
-
-            //System.out.printf("Address: %x, OPCode: %s, PC: %d, Instruction: %s\n", pc, opcode.toString(), pc, instruction.getClass());
+            
+            LOGGER.debug("Address: {}, OPCode: {}, PC: {}, Instruction: {}\n", pc, opcode.toString(), pc, instruction.getClass());
             instruction.execute(opcode, this.memory, this.vram, this.stack, this.register, this.keyboard);
         }
-
+        
         if (0 < st) {
             //java.awt.Toolkit.getDefaultToolkit().beep();
         }
@@ -151,54 +156,57 @@ public class Chip8 implements Runnable {
      * Detiene la ejecucion del chip.
      */
     public void stop() {
+        LOGGER.debug("Stopping CHIP 8");
         this.running = false;
     }
-
+    
     @Override
     public void run() {
+        LOGGER.debug("Running CHIP 8");
         final double TIMER_FREQUENCY = 1_000.0 / TIMER_HZ;
         final double UPDATE_FREQUENCY = 1_000.0 / UPDATE_HZ;
-
+        
         double delta = 0f;
-
+        
         long lastTime = System.currentTimeMillis();
         long currentTime;
-
+        
         long timer = 0;
-
+        
         double cycles = 0f;
-
+        
         int updates = 0;
         int renders = 0;
-
+        
         this.running = true;
         while (this.running) {
             currentTime = System.currentTimeMillis();
-
+            
             delta += currentTime - lastTime;
             cycles += currentTime - lastTime;
-
+            
             if (UPDATE_FREQUENCY <= cycles) {
                 updates++;
                 cycles -= UPDATE_FREQUENCY;
-
+                
                 this.step();
             }
-
+            
             if (TIMER_FREQUENCY <= delta) {
                 renders++;
                 delta -= TIMER_FREQUENCY;
                 this.vram().draw();
                 this.decrementCounters();
             }
-
+            
             timer += currentTime - lastTime;
             if (1_000 <= timer) {
+                LOGGER.info("updates: {}, renders: {}", updates, renders);
                 timer = 0;
                 updates = 0;
                 renders = 0;
             }
-
+            
             lastTime = currentTime;
         }
     }
