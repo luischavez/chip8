@@ -31,24 +31,21 @@ public class MemoryUtils {
      *
      * @param inputStream stream a leer.
      * @return bytes contenidos.
+     * @throws java.io.IOException si ocurre un error al manejar el stream.
      */
-    public static byte[] toBytes(InputStream inputStream) {
-        byte[] bytes = new byte[0];
+    public static byte[] toBytes(InputStream inputStream) throws IOException {
+        byte[] buffer = new byte[4096];
 
-        try {
-            byte[] buffer = new byte[4096];
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-            int read;
-            while ((read = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, read);
-            }
-
-            inputStream.close();
-            outputStream.close();
-            bytes = outputStream.toByteArray();
-        } catch (IOException ex) {
+        int read;
+        while ((read = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, read);
         }
+
+        outputStream.close();
+
+        byte[] bytes = outputStream.toByteArray();
 
         return bytes;
     }
