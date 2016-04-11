@@ -3,3 +3,5 @@
 /src/main/resources/rom/test/
 /nbactions.xml
 /nb-configuration.xml
+/target/
+*.log

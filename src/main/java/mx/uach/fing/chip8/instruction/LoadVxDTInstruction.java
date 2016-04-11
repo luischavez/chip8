@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * Fx07 - LD Vx, DT Set Vx = delay timer value.
@@ -31,13 +27,13 @@ import mx.uach.fing.chip8.VRAM;
  * @author Luis Chávez
  */
 public class LoadVxDTInstruction implements Instruction {
-    
+
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
-        
-        int dt = register.getDT();
-        
-        register.set(x, dt);
+
+        int dt = chip8.register.getDT();
+
+        chip8.register.set(x, dt);
     }
 }

@@ -18,6 +18,7 @@ package mx.uach.fing.chip8;
 
 import mx.uach.fing.chip8.instruction.Instruction;
 import mx.uach.fing.chip8.instruction.InstructionSet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author Luis Chávez
  */
 public class Chip8 implements Runnable {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Chip8.class);
 
     // Frecuencia de actualizacion de los contadores.
@@ -36,26 +37,29 @@ public class Chip8 implements Runnable {
     public static final int UPDATE_HZ = 500;
 
     // Memoria RAM del chip con 4KB de almacenamiento.
-    private final Memory memory;
+    public final Memory memory;
 
     // Memoria de video.
-    private final VRAM vram;
+    public final VRAM vram;
 
     // Pila donde se almacenaran las direcciones de las rutinas.
-    private final Stack stack;
+    public final Stack stack;
 
     // Registro donde se almacenaran las variables.
-    private final Register register;
+    public final Register register;
 
     // Teclado virtual.
-    private final Keyboard keyboard;
+    public final Keyboard keyboard;
 
     // Set de instrucciones del chip.
     private final InstructionSet instructionSet;
 
     // Bandera que indica que el chip esta corriendo.
     private boolean running = false;
-    
+
+    // Bandera que indica si se esta ejecutando en modo extendido.
+    private boolean extended = true;
+
     public Chip8() {
         this.memory = new Memory();
         this.vram = new VRAM();
@@ -66,48 +70,31 @@ public class Chip8 implements Runnable {
     }
 
     /**
-     * Obtiene la memoria del chip.
+     * Retorna el estado de la ejecucion del emulador.
      *
-     * @return memoria.
+     * @return true si se esta ejecutando, false de otra manera.
      */
-    public Memory memory() {
-        return this.memory;
+    public boolean isRunning() {
+        return running;
     }
 
     /**
-     * Obtiene la memoria de video del chip.
+     * Retorna el modo de ejecucion del emulador.
      *
-     * @return memoria de video.
+     * @return true si esta en modo extendido, false de otra manera.
      */
-    public VRAM vram() {
-        return this.vram;
+    public boolean isExtended() {
+        return extended;
     }
 
     /**
-     * Obtiene la pila del chip.
+     * Establece el modo de ejecucion.
      *
-     * @return pila.
+     * @param extended true para el modo extendido, false de otra manera.
      */
-    public Stack stack() {
-        return this.stack;
-    }
-
-    /**
-     * Obtiene el registro del chip.
-     *
-     * @return registro.
-     */
-    public Register register() {
-        return this.register;
-    }
-
-    /**
-     * Obtiene el teclado.
-     *
-     * @return teclado.
-     */
-    public Keyboard keyboard() {
-        return this.keyboard;
+    public void setExtended(boolean extended) {
+        this.extended = extended;
+        this.vram.setMode(extended);
     }
 
     /**
@@ -127,18 +114,19 @@ public class Chip8 implements Runnable {
      */
     public void step() {
         int st = this.register.getST();
-        
+
         if (!this.keyboard.isWaiting()) {
             int pc = this.register.getPC();
             OPCode opcode = this.memory.readInstruction(pc);
             this.register.incrementPC();
-            
+
             Instruction instruction = this.instructionSet.resolve(opcode);
-            
-            LOGGER.debug("Address: {}, OPCode: {}, PC: {}, Instruction: {}\n", pc, opcode.toString(), pc, instruction.getClass());
-            instruction.execute(opcode, this.memory, this.vram, this.stack, this.register, this.keyboard);
+
+            //LOGGER.debug("Address: {}, OPCode: {}, PC: {}, Instruction: {}\n",
+            //        pc, opcode.toString(), pc, instruction.getClass());
+            instruction.execute(opcode, this);
         }
-        
+
         if (0 < st) {
             //java.awt.Toolkit.getDefaultToolkit().beep();
         }
@@ -159,54 +147,54 @@ public class Chip8 implements Runnable {
         LOGGER.debug("Stopping CHIP 8");
         this.running = false;
     }
-    
+
     @Override
     public void run() {
         LOGGER.debug("Running CHIP 8");
         final double TIMER_FREQUENCY = 1_000.0 / TIMER_HZ;
         final double UPDATE_FREQUENCY = 1_000.0 / UPDATE_HZ;
-        
+
         double delta = 0f;
-        
+
         long lastTime = System.currentTimeMillis();
         long currentTime;
-        
+
         long timer = 0;
-        
+
         double cycles = 0f;
-        
+
         int updates = 0;
         int renders = 0;
-        
+
         this.running = true;
         while (this.running) {
             currentTime = System.currentTimeMillis();
-            
+
             delta += currentTime - lastTime;
             cycles += currentTime - lastTime;
-            
+
             if (UPDATE_FREQUENCY <= cycles) {
                 updates++;
                 cycles -= UPDATE_FREQUENCY;
-                
+
                 this.step();
             }
-            
+
             if (TIMER_FREQUENCY <= delta) {
                 renders++;
                 delta -= TIMER_FREQUENCY;
-                this.vram().draw();
+                this.vram.draw();
                 this.decrementCounters();
             }
-            
+
             timer += currentTime - lastTime;
             if (1_000 <= timer) {
-                LOGGER.info("updates: {}, renders: {}", updates, renders);
+                //LOGGER.debug("updates: {}, renders: {}", updates, renders);
                 timer = 0;
                 updates = 0;
                 renders = 0;
             }
-            
+
             lastTime = currentTime;
         }
     }

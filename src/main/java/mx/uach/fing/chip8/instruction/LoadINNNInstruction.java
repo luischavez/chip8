@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * Annn - LD I, addr Set I = nnn.
@@ -33,7 +29,7 @@ import mx.uach.fing.chip8.VRAM;
 public class LoadINNNInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
-        register.setRegisterI(opcode.getAddress());
+    public void execute(OPCode opcode, Chip8 chip8) {
+        chip8.register.setRegisterI(opcode.getAddress());
     }
 }

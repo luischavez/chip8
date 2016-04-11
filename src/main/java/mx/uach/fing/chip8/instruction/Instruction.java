@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  *
@@ -33,11 +29,7 @@ public interface Instruction {
      * Ejecuta la instruccion con el opcode especificado.
      *
      * @param opcode opcode de la instruccion.
-     * @param memory memoria del chip.
-     * @param vram memoria de video.
-     * @param stack pila del chip.
-     * @param register registro del chip.
-     * @param keyboard teclado virutal.
+     * @param chip8 instancia del emulador.
      */
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard);
+    public void execute(OPCode opcode, Chip8 chip8);
 }

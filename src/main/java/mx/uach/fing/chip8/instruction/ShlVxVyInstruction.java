@@ -16,12 +16,9 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
 import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * 8xyE - SHL Vx {, Vy} Set Vx = Vx SHL 1.
@@ -34,15 +31,16 @@ import mx.uach.fing.chip8.VRAM;
 public class ShlVxVyInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
 
-        int vx = register.get(x);
+        int vx = chip8.register.get(x);
 
-        register.set(Register.REGISTER_FLAG, (vx & 0x80) != 0 ? Register.BIT_1 : Register.BIT_0);
+        chip8.register.set(Register.REGISTER_FLAG,
+                (vx & 0x80) != 0 ? Register.BIT_1 : Register.BIT_0);
 
         vx <<= 1;
 
-        register.set(x, vx);
+        chip8.register.set(x, vx);
     }
 }

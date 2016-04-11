@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * Fx55 - LD [I], Vx Store registers V0 through Vx in memory starting at
@@ -35,14 +31,14 @@ import mx.uach.fing.chip8.VRAM;
 public class LoadIVxInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
 
-        int i = register.getRegisterI();
+        int i = chip8.register.getRegisterI();
 
         for (int index = 0; index <= x; index++) {
-            int vx = register.get(index);
-            memory.set(i + index, vx);
+            int vx = chip8.register.get(index);
+            chip8.memory.set(i + index, vx);
         }
     }
 }

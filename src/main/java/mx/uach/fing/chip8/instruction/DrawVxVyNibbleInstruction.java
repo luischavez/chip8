@@ -16,16 +16,16 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
 import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
 import mx.uach.fing.chip8.VRAM;
 
 /**
  * Dxyn - DRW Vx, Vy, nibble Display n-byte sprite starting at memory location I
  * at (Vx, Vy), set VF = collision.
+ *
+ * If N=0 and extended mode, show 16x16 sprite.
  *
  * The interpreter reads n bytes from memory, starting at the address stored in
  * I. These bytes are then displayed as sprites on screen at coordinates (Vx,
@@ -41,32 +41,35 @@ import mx.uach.fing.chip8.VRAM;
 public class DrawVxVyNibbleInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
         int y = opcode.getY();
 
         int n = opcode.getNibble();
 
-        int i = register.getRegisterI();
+        int i = chip8.register.getRegisterI();
 
-        register.set(Register.REGISTER_FLAG, Register.NOT_COLLISION);
+        chip8.register.set(Register.REGISTER_FLAG, Register.NOT_COLLISION);
         for (int row = 0; row < n; row++) {
-            int sprite = memory.read(i + row);
+            int sprite = chip8.memory.read(i + row);
 
-            for (int column = 0; column < VRAM.SPRITE_WIDTH; column++) {
-                int px = register.get(x) + column;
-                px &= (VRAM.SCREEN_WIDTH - 1);
+            int spriteWidth = 0 == n && chip8.isExtended()
+                    ? VRAM.EXTENDED_SPRITE_WIDTH : VRAM.STANDARD_SPRITE_WIDTH;
 
-                int py = register.get(y) + row;
-                py &= (VRAM.SCREEN_HEIGHT - 1);
+            for (int column = 0; column < spriteWidth; column++) {
+                int px = chip8.register.get(x) + column;
+                px &= (chip8.vram.screenWidth() - 1);
+
+                int py = chip8.register.get(y) + row;
+                py &= (chip8.vram.screenHeight() - 1);
 
                 int pixel = (sprite & (1 << (7 - column))) != 0 ? 1 : 0;
-                int unset = vram.xor(px, py, pixel);
+                int unset = chip8.vram.xor(px, py, pixel);
 
-                int vf = register.get(Register.REGISTER_FLAG);
+                int vf = chip8.register.get(Register.REGISTER_FLAG);
                 vf |= unset;
 
-                register.set(Register.REGISTER_FLAG, vf);
+                chip8.register.set(Register.REGISTER_FLAG, vf);
             }
         }
     }

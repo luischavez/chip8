@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * 00EE - RET Return from a subroutine.
@@ -34,7 +30,7 @@ import mx.uach.fing.chip8.VRAM;
 public class ReturnSubroutineInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
-        register.setPC(stack.pop());
+    public void execute(OPCode opcode, Chip8 chip8) {
+        chip8.register.setPC(chip8.stack.pop());
     }
 }

@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * 6xkk - LD Vx, byte Set Vx = kk.
@@ -33,10 +29,10 @@ import mx.uach.fing.chip8.VRAM;
 public class LoadVxKKInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
         int b = opcode.getByte();
 
-        register.set(x, b);
+        chip8.register.set(x, b);
     }
 }

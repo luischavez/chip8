@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * Fx33 - LD B, Vx Store BCD representation of Vx in memory locations I, I+1,
@@ -36,15 +32,15 @@ import mx.uach.fing.chip8.VRAM;
 public class LoadBCDInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
 
-        int i = register.getRegisterI();
+        int i = chip8.register.getRegisterI();
 
-        int vx = register.get(x);
+        int vx = chip8.register.get(x);
 
-        memory.set(i, vx / 100);
-        memory.set(i + 1, (vx / 10) % 10);
-        memory.set(i + 2, vx % 10);
+        chip8.memory.set(i, vx / 100);
+        chip8.memory.set(i + 1, (vx / 10) % 10);
+        chip8.memory.set(i + 2, vx % 10);
     }
 }

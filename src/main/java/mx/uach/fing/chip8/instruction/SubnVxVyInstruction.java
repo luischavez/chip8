@@ -16,12 +16,9 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
 import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * 8xy7 - SUBN Vx, Vy Set Vx = Vy - Vx, set VF = NOT borrow.
@@ -34,17 +31,17 @@ import mx.uach.fing.chip8.VRAM;
 public class SubnVxVyInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
         int y = opcode.getY();
 
-        int vx = register.get(x);
-        int vy = register.get(y);
+        int vx = chip8.register.get(x);
+        int vy = chip8.register.get(y);
 
-        register.set(Register.REGISTER_FLAG, vy > vx ? Register.NOT_BORROW : Register.BORROW);
+        chip8.register.set(Register.REGISTER_FLAG, vy > vx ? Register.NOT_BORROW : Register.BORROW);
 
         vy -= vx;
 
-        register.set(x, vy);
+        chip8.register.set(x, vy);
     }
 }

@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -32,6 +33,7 @@ import javax.swing.JMenuItem;
 import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.VRAM;
 import mx.uach.fing.chip8.utils.MemoryUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,24 +45,20 @@ public class SwingGUI {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SwingGUI.class);
 
-    /**
-     * Instancia del CHIP 8.
-     */
+    // Instancia del CHIP 8.
     private Chip8 chip8;
 
-    /**
-     * Listener que escuchara por los eventos del teclado.
-     */
+    // Listener que escuchara por los eventos del teclado.
     private final SwingKeyListener keyListener = new SwingKeyListener();
 
-    /**
-     * Componentes Swing.
-     */
+    // Componentes Swing.
     private final JFrame mainFrame = new JFrame("Chip-8 by luischavez");
     private final JMenuBar menuBar = new JMenuBar();
     private final JMenu fileMenu = new JMenu("File");
     private final JMenuItem loadMenuItem = new JMenuItem("Load");
-    private final GameCanvas canvas = new GameCanvas();
+
+    // Lienzo donde se dibujara el estado.
+    private GameCanvas canvas;
 
     /**
      * Inicializa la ventana y agrega los componentes, este metodo solo se llama
@@ -70,7 +68,6 @@ public class SwingGUI {
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.mainFrame.setLayout(new FlowLayout());
-        this.canvas.setPreferredSize(new Dimension(VRAM.SCREEN_WIDTH * 10, VRAM.SCREEN_HEIGHT * 10));
 
         this.mainFrame.addKeyListener(this.keyListener);
         this.loadMenuItem.addActionListener(new ActionListener() {
@@ -85,12 +82,44 @@ public class SwingGUI {
         this.menuBar.add(this.fileMenu);
         this.mainFrame.setJMenuBar(this.menuBar);
 
-        this.mainFrame.add(this.canvas);
-
         this.mainFrame.pack();
         this.mainFrame.setResizable(false);
         this.mainFrame.setLocationRelativeTo(null);
         this.mainFrame.setVisible(true);
+    }
+
+    /**
+     * Crea el lienzo y lo muestra por pantalla.
+     *
+     * @param vram memoria de video.
+     */
+    private void createCanvas(final VRAM vram) {
+        if (null != this.canvas) {
+            this.mainFrame.remove(this.canvas);
+            this.mainFrame.pack();
+        }
+
+        this.canvas = new GameCanvas(vram);
+        this.canvas.setPreferredSize(
+                new Dimension(
+                        vram.screenWidth() * 10,
+                        vram.screenHeight() * 10));
+
+        vram.setListener(new VRAM.BufferListener() {
+            @Override
+            public void onDraw(int[] buffer) {
+                SwingGUI.this.canvas.repaint();
+            }
+
+            @Override
+            public void onModeChanged(boolean extended) {
+                SwingGUI.this.createCanvas(vram);
+            }
+        });
+
+        this.mainFrame.add(this.canvas);
+        this.mainFrame.pack();
+        this.mainFrame.setLocationRelativeTo(null);
     }
 
     /**
@@ -104,10 +133,10 @@ public class SwingGUI {
 
         this.chip8 = new Chip8();
         this.chip8.loadMemory(rom);
-        this.chip8.vram().setListener(new SwingBufferListener(this.canvas));
 
-        this.keyListener.setKeyboard(this.chip8.keyboard());
-        this.canvas.setVram(this.chip8.vram());
+        this.keyListener.setKeyboard(this.chip8.keyboard);
+
+        this.createCanvas(this.chip8.vram);
 
         new Thread(this.chip8, "CHIP-8 THREAD").start();
     }
@@ -116,7 +145,8 @@ public class SwingGUI {
      * Carga una rom desde un archivo y inicializa el emulador.
      */
     private void load() {
-        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
+        JFileChooser fileChooser
+                = new JFileChooser(System.getProperty("user.dir"));
 
         int option = fileChooser.showOpenDialog(this.mainFrame);
         if (option == JFileChooser.APPROVE_OPTION) {
@@ -133,8 +163,6 @@ public class SwingGUI {
     }
 
     public static void main(String[] args) {
-        SwingGUI gui = new SwingGUI();
-
-        gui.initialize();
+        new SwingGUI().initialize();
     }
 }

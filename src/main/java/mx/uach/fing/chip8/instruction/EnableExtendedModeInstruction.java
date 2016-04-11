@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 UACH
+ * Copyright (C) 2016 UACH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,27 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mx.uach.fing.chip8.gui;
+package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.VRAM;
+import mx.uach.fing.chip8.Chip8;
+import mx.uach.fing.chip8.OPCode;
 
 /**
+ * 00FF - Enable extended screen mode for full-screen graphics.
  *
- * @author Luis Chávez
+ * @author Luis Chavez
  */
-public class SwingBufferListener implements VRAM.BufferListener {
-
-    /**
-     * Instancia del lienzo donde se dibujara.
-     */
-    private final GameCanvas canvas;
-
-    public SwingBufferListener(GameCanvas canvas) {
-        this.canvas = canvas;
-    }
+public class EnableExtendedModeInstruction implements Instruction {
 
     @Override
-    public void onDraw(int[] buffer) {
-        this.canvas.repaint();
+    public void execute(OPCode opcode, Chip8 chip8) {
+        chip8.setExtended(true);
     }
 }

@@ -17,12 +17,9 @@
 package mx.uach.fing.chip8.instruction;
 
 import java.util.Random;
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * Cxkk - RND Vx, byte Set Vx = random byte AND kk.
@@ -36,7 +33,7 @@ import mx.uach.fing.chip8.VRAM;
 public class RandomVxKKInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         Random random = new Random();
 
         int x = opcode.getX();
@@ -44,6 +41,6 @@ public class RandomVxKKInstruction implements Instruction {
         int number = random.nextInt(256);
         int kk = opcode.getByte();
 
-        register.set(x, number & kk);
+        chip8.register.set(x, number & kk);
     }
 }

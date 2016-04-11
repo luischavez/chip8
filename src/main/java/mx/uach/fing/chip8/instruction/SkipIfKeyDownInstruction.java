@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * Ex9E - SKP Vx Skip next instruction if key with the value of Vx is pressed.
@@ -34,13 +30,13 @@ import mx.uach.fing.chip8.VRAM;
 public class SkipIfKeyDownInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
 
-        int vx = register.get(x);
+        int vx = chip8.register.get(x);
 
-        if (keyboard.isKeyDown(vx)) {
-            register.incrementPC();
+        if (chip8.keyboard.isKeyDown(vx)) {
+            chip8.register.incrementPC();
         }
     }
 }

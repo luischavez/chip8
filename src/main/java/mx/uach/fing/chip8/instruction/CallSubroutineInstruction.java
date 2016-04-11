@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * 2nnn - CALL addr Call subroutine at nnn.
@@ -34,9 +30,9 @@ import mx.uach.fing.chip8.VRAM;
 public class CallSubroutineInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
-        stack.push(register.getPC());
+    public void execute(OPCode opcode, Chip8 chip8) {
+        chip8.stack.push(chip8.register.getPC());
 
-        register.setPC(opcode.getAddress());
+        chip8.register.setPC(opcode.getAddress());
     }
 }
