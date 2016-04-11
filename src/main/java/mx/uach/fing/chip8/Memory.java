@@ -22,6 +22,268 @@ package mx.uach.fing.chip8;
  */
 public class Memory {
 
+    // Fuente 5b en hexadecimal.
+    public static final char[] FONT = new char[]{
+        0x40, //  # 
+        0xA0, // # #
+        0xA0, // # #
+        0xA0, // # #
+        0xE0, // ###
+
+        0x80, // #
+        0x80, // #
+        0x80, // #
+        0x80, // #
+        0x80, // #
+
+        0x40, //  # 
+        0xA0, // # #
+        0x20, //   #
+        0x40, //  # 
+        0x60, //  ##
+
+        0x40, //  # 
+        0x20, //   #
+        0x40, //  # 
+        0x20, //   #
+        0xE0, // ###
+
+        0x20, //   #
+        0x60, //  ##
+        0xA0, // # #
+        0xE0, // ###
+        0x20, //   #
+
+        0x60, //  ##
+        0x80, // #  
+        0x60, //  ##
+        0x20, //   #
+        0xC0, // ## 
+
+        0x20, //   #
+        0xC0, // ## 
+        0xA0, // # #
+        0xA0, // # #
+        0xE0, // ###
+
+        0x60, //  ##
+        0xA0, // # #
+        0x20, //   #
+        0x40, //  # 
+        0x40, //  # 
+
+        0xE0, // ###
+        0xA0, // # #
+        0x40, //  # 
+        0xA0, // # #
+        0xE0, // ###
+
+        0x40, //  # 
+        0xA0, // # #
+        0xA0, // # #
+        0x60, //  ##
+        0x40, //  # 
+
+        0x20, //   # 
+        0x20, //   # 
+        0x50, //  # #
+        0xB0, // # ##
+        0x90, // #  #
+
+        0xE0, // ### 
+        0x90, // #  #
+        0x70, //  ###
+        0x90, // #  #
+        0xF0, // ####
+
+        0x30, //   ##
+        0xC0, // ##  
+        0x80, // #   
+        0x80, // #   
+        0x70, //  ###
+
+        0xE0, // ###  
+        0x98, // #  ##
+        0x88, // #   #
+        0x88, // #   #
+        0xF0, // #### 
+
+        0xF0, // ####
+        0x80, // #   
+        0x60, //  ## 
+        0x80, // #   
+        0xF0, // ####
+
+        0xF0, // ####
+        0x80, // #   
+        0x60, //  ## 
+        0x80, // #   
+        0x80, // #   
+    };
+
+    // Fuente 10b en hexadecimal.
+    public static char[] EXTENDED_FONT = new char[]{
+        0x70, //  ### 
+        0x88, // #   #
+        0x88, // #   #
+        0x88, // #   #
+        0x88, // #   #
+        0x88, // #   #
+        0x88, // #   #
+        0x88, // #   #
+        0x70, //  ### 
+
+        0x40, //  # 
+        0xC0, // ## 
+        0x40, //  # 
+        0x40, //  # 
+        0x40, //  # 
+        0x40, //  # 
+        0x40, //  # 
+        0x40, //  # 
+        0xE0, // ###
+
+        0x70, //  ### 
+        0x88, // #   #
+        0x08, //     #
+        0x08, //     #
+        0x10, //    # 
+        0x10, //    # 
+        0x20, //   #  
+        0x48, //  #  #
+        0xF8, // #####
+
+        0x70, //  ### 
+        0x88, // #   #
+        0x08, //     #
+        0x10, //    # 
+        0x30, //   ## 
+        0x08, //     #
+        0x08, //     #
+        0x08, //     #
+        0xF0, // #### 
+
+        0x08, //     # 
+        0x18, //    ## 
+        0x28, //   # # 
+        0x28, //   # # 
+        0x48, //  #  # 
+        0x88, // #   # 
+        0xFC, // ######
+        0x08, //     # 
+        0x08, //     # 
+
+        0x38, //   ###
+        0x20, //   #  
+        0x60, //  ##  
+        0x10, //    # 
+        0x08, //     #
+        0x08, //     #
+        0x08, //     #
+        0x10, //    # 
+        0xE0, // ###  
+
+        0x18, //    ##
+        0x20, //   #  
+        0x40, //  #   
+        0xB0, // # ## 
+        0xC8, // ##  #
+        0x88, // #   #
+        0x88, // #   #
+        0x88, // #   #
+        0x70, //  ### 
+
+        0xF8, // #####
+        0x88, // #   #
+        0x10, //    # 
+        0x10, //    # 
+        0x10, //    # 
+        0x20, //   #  
+        0x20, //   #  
+        0x20, //   #  
+        0x40, //  #   
+
+        0x70, //  ### 
+        0x88, // #   #
+        0x88, // #   #
+        0x50, //  # # 
+        0x20, //   #  
+        0x50, //  # # 
+        0x88, // #   #
+        0x88, // #   #
+        0x70, //  ### 
+
+        0x70, //  ### 
+        0x88, // #   #
+        0x88, // #   #
+        0x88, // #   #
+        0x88, // #   #
+        0x78, //  ####
+        0x10, //    # 
+        0x20, //   #  
+        0xC0, // ##   
+
+        0x08, 0x00, //     #    
+        0x08, 0x00, //     #    
+        0x14, 0x00, //    # #   
+        0x14, 0x00, //    # #   
+        0x22, 0x00, //   #   #  
+        0x3E, 0x00, //   #####  
+        0x41, 0x00, //  #     # 
+        0x41, 0x00, //  #     # 
+        0xE3, 0x80, // ###   ###
+
+        0xFC, // ###### 
+        0x42, //  #    #
+        0x42, //  #    #
+        0x42, //  #    #
+        0x7C, //  ##### 
+        0x42, //  #    #
+        0x42, //  #    #
+        0x42, //  #    #
+        0xFC, // ###### 
+
+        0x3A, //   ### #
+        0x46, //  #   ##
+        0x82, // #     #
+        0x80, // #      
+        0x80, // #      
+        0x80, // #      
+        0x82, // #     #
+        0x44, //  #   # 
+        0x38, //   ###  
+
+        0xFC, // ######  
+        0x42, //  #    # 
+        0x41, //  #     #
+        0x41, //  #     #
+        0x41, //  #     #
+        0x41, //  #     #
+        0x41, //  #     #
+        0x42, //  #    # 
+        0xFC, // ######  
+
+        0xFC, // ###### 
+        0x44, //  #   # 
+        0x40, //  #     
+        0x48, //  #  #  
+        0x78, //  ####  
+        0x48, //  #  #  
+        0x40, //  #     
+        0x42, //  #    #
+        0xFC, // ###### 
+
+        0xFC, // ######
+        0x44, //  #   #
+        0x40, //  #    
+        0x48, //  #  # 
+        0x78, //  #### 
+        0x48, //  #  # 
+        0x40, //  #    
+        0x40, //  #    
+        0xE0, // ###   
+    };
+
     // Tamano de la memoria en bytes.
     public static final int MEMORY_SIZE = 4096;
 
@@ -31,8 +293,11 @@ public class Memory {
     // Inicio de la memoria.
     public static final int MEMORY_INIT = 0x0;
 
-    // Inicio de la fuente.
+    // Inicio de la fuente, 0x50 (80.
     public static final int FONT_INIT = 0x50;
+
+    // Inicio de la fuente extendida, 0x9C (156).
+    public static final int EXTENDED_FONT_INIT = 0x9C;
 
     // Reservada para el interprete, 0x1FF (511).
     public static final int INTERPRETER_END = 0x1FF;
@@ -59,29 +324,14 @@ public class Memory {
      * Carga la fuente en memoria.
      */
     private void loadFont() {
-        // Fuente en hexadecimal.
-        char[] fonts = new char[]{
-            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
-            0x20, 0x60, 0x20, 0x20, 0x70, // 1
-            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
-            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
-            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
-            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
-            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
-            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
-            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
-            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
-            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
-            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-            0xF0, 0x80, 0xF0, 0x80, 0x80, // F
-        };
 
         // Copia la fuente en memoria.
-        for (int i = 0; i < fonts.length; i++) {
-            this.ram[FONT_INIT + i] = fonts[i] & 0xFF;
+        for (int i = 0; i < FONT.length; i++) {
+            this.ram[FONT_INIT + i] = FONT[i] & 0xFF;
+        }
+        for (int i = 0; i < EXTENDED_FONT.length; i++) {
+            this.ram[EXTENDED_FONT_INIT + i] = EXTENDED_FONT[i] & 0xFFFF;
+            System.out.println(EXTENDED_FONT_INIT + i);
         }
     }
 

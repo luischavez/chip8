@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  * Bnnn - JP V0, addr Jump to location nnn + V0.
@@ -33,10 +29,10 @@ import mx.uach.fing.chip8.VRAM;
 public class JumpV0NNNInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int address = opcode.getAddress();
-        int v0 = register.get(0);
+        int v0 = chip8.register.get(0);
 
-        register.setPC(v0 + address);
+        chip8.register.setPC(v0 + address);
     }
 }

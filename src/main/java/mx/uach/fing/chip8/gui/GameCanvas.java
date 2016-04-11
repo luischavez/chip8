@@ -20,7 +20,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JComponent;
+
 import mx.uach.fing.chip8.VRAM;
 
 /**
@@ -29,30 +31,22 @@ import mx.uach.fing.chip8.VRAM;
  */
 public class GameCanvas extends JComponent {
 
-    /**
-     * Buffer donde almacenar la informacion de video actual.
-     */
-    private final BufferedImage screen = new BufferedImage(VRAM.SCREEN_WIDTH * 10, VRAM.SCREEN_HEIGHT * 10, BufferedImage.TYPE_USHORT_GRAY);
-
-    /**
-     * Instancia de la memoria de vidoe del chip actual.
-     */
+    // Instancia de la memoria de vidoe del chip actual.
     private VRAM vram;
 
-    public GameCanvas() {
-    }
-
-    public GameCanvas(VRAM vram) {
-        this.vram = vram;
-    }
+    // Buffer donde almacenar la informacion de video actual.
+    private BufferedImage screen;
 
     /**
-     * Establece la instancia de la memoria de video actual.
+     * Inicializa el lienzo con la memoria de video especificada.
      *
      * @param vram memoria de video.
      */
-    public void setVram(VRAM vram) {
+    public GameCanvas(VRAM vram) {
         this.vram = vram;
+        this.screen = new BufferedImage(
+                vram.screenWidth() * 10, vram.screenHeight() * 10,
+                BufferedImage.TYPE_USHORT_GRAY);
     }
 
     @Override
@@ -63,10 +57,10 @@ public class GameCanvas extends JComponent {
             return;
         }
 
-        int[] buffer = this.vram.getBuffer();
+        int[] buffer = this.vram.buffer();
         for (int i = 0; i < buffer.length; i++) {
-            int x = VRAM.toPointX(i);
-            int y = VRAM.toPointY(i);
+            int x = this.vram.toPointX(i);
+            int y = this.vram.toPointY(i);
             int pixel = buffer[i];
 
             Graphics2D graphics = this.screen.createGraphics();

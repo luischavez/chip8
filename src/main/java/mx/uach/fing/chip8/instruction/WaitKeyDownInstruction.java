@@ -16,12 +16,9 @@
  */
 package mx.uach.fing.chip8.instruction;
 
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  *
@@ -35,14 +32,14 @@ import mx.uach.fing.chip8.VRAM;
 public class WaitKeyDownInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, final Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, final Chip8 chip8) {
         final int x = opcode.getX();
 
-        keyboard.waitKey(new Keyboard.KeyListener() {
+        chip8.keyboard.waitKey(new Keyboard.KeyListener() {
 
             @Override
             public void onKeyFound(int key) {
-                register.set(x, key);
+                chip8.register.set(x, key);
             }
         });
     }

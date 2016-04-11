@@ -16,12 +16,8 @@
  */
 package mx.uach.fing.chip8.instruction;
 
-import mx.uach.fing.chip8.Keyboard;
-import mx.uach.fing.chip8.Memory;
+import mx.uach.fing.chip8.Chip8;
 import mx.uach.fing.chip8.OPCode;
-import mx.uach.fing.chip8.Register;
-import mx.uach.fing.chip8.Stack;
-import mx.uach.fing.chip8.VRAM;
 
 /**
  *
@@ -36,14 +32,14 @@ import mx.uach.fing.chip8.VRAM;
 public class LoadVxIInstruction implements Instruction {
 
     @Override
-    public void execute(OPCode opcode, Memory memory, VRAM vram, Stack stack, Register register, Keyboard keyboard) {
+    public void execute(OPCode opcode, Chip8 chip8) {
         int x = opcode.getX();
-        
-        int i = register.getRegisterI();
-        
+
+        int i = chip8.register.getRegisterI();
+
         for (int index = 0; index <= x; index++) {
-            int b = memory.read(i + index);
-            register.set(index, b);
+            int b = chip8.memory.read(i + index);
+            chip8.register.set(index, b);
         }
     }
 }

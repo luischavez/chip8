@@ -44,75 +44,131 @@ public class InstructionSet {
      */
     private void sets() {
         // 0nnn - SYS addr
-        // this.instructionMap.put(Pattern.compile("^0[0-9a-fA-F]{3}$"), new SystemAddressInstruction());
+        //this.instructionMap.put(Pattern.compile("^0[0-9a-fA-F]{3}$"),
+        //        new SystemAddressInstruction());
         // 00E0 - CLS
-        this.instructionMap.put(Pattern.compile("^00E0$"), new ClearScreenInstruction());
+        this.instructionMap.put(Pattern.compile("^00E0$"),
+                new ClearScreenInstruction());
         // 00EE - RET
-        this.instructionMap.put(Pattern.compile("^00EE$"), new ReturnSubroutineInstruction());
+        this.instructionMap.put(Pattern.compile("^00EE$"),
+                new ReturnSubroutineInstruction());
         // 1nnn - JP addr
-        this.instructionMap.put(Pattern.compile("^1[0-9a-fA-F]{3}$"), new JumpNNNInstruction());
+        this.instructionMap.put(Pattern.compile("^1[0-9a-fA-F]{3}$"),
+                new JumpNNNInstruction());
         // 2nnn - CALL addr
-        this.instructionMap.put(Pattern.compile("^2[0-9a-fA-F]{3}$"), new CallSubroutineInstruction());
+        this.instructionMap.put(Pattern.compile("^2[0-9a-fA-F]{3}$"),
+                new CallSubroutineInstruction());
         // 3xkk - SE Vx, byte
-        this.instructionMap.put(Pattern.compile("^3[0-9a-fA-F]{3}$"), new SkipEqualVxKKInstruction());
+        this.instructionMap.put(Pattern.compile("^3[0-9a-fA-F]{3}$"),
+                new SkipEqualVxKKInstruction());
         // 4xkk - SNE Vx, byte
-        this.instructionMap.put(Pattern.compile("^4[0-9a-fA-F]{3}$"), new SkipNotEqualVxKKInstruction());
+        this.instructionMap.put(Pattern.compile("^4[0-9a-fA-F]{3}$"),
+                new SkipNotEqualVxKKInstruction());
         // 5xy0 - SE Vx, Vy
-        this.instructionMap.put(Pattern.compile("^5[0-9a-fA-F]{2}0$"), new SkipEqualVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^5[0-9a-fA-F]{2}0$"),
+                new SkipEqualVxVyInstruction());
         // 6xkk - LD Vx, byte
-        this.instructionMap.put(Pattern.compile("^6[0-9a-fA-F]{3}$"), new LoadVxKKInstruction());
+        this.instructionMap.put(Pattern.compile("^6[0-9a-fA-F]{3}$"),
+                new LoadVxKKInstruction());
         // 7xkk - ADD Vx, byte
-        this.instructionMap.put(Pattern.compile("^7[0-9a-fA-F]{3}$"), new AddVxKKInstruction());
+        this.instructionMap.put(Pattern.compile("^7[0-9a-fA-F]{3}$"),
+                new AddVxKKInstruction());
         // 8xy0 - LD Vx, Vy
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}0$"), new LoadVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}0$"),
+                new LoadVxVyInstruction());
         // 8xy1 - OR Vx, Vy
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}1$"), new OrVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}1$"),
+                new OrVxVyInstruction());
         // 8xy2 - AND Vx, Vy
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}2$"), new AndVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}2$"),
+                new AndVxVyInstruction());
         // 8xy3 - XOR Vx, Vy
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}3$"), new XorVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}3$"),
+                new XorVxVyInstruction());
         // 8xy4 - ADD Vx, Vy
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}4$"), new AddVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}4$"),
+                new AddVxVyInstruction());
         // 8xy5 - SUB Vx, Vy
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}5$"), new SubVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}5$"),
+                new SubVxVyInstruction());
         // 8xy6 - SHR Vx {, Vy}
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}6$"), new ShrVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}6$"),
+                new ShrVxVyInstruction());
         // 8xy7 - SUBN Vx, Vy
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}7$"), new SubnVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}7$"),
+                new SubnVxVyInstruction());
         // 8xyE - SHL Vx {, Vy}
-        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}E$"), new ShlVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^8[0-9a-fA-F]{2}E$"),
+                new ShlVxVyInstruction());
         // 9xy0 - SNE Vx, Vy
-        this.instructionMap.put(Pattern.compile("^9[0-9a-fA-F]{2}0$"), new SkipNotEqualVxVyInstruction());
+        this.instructionMap.put(Pattern.compile("^9[0-9a-fA-F]{2}0$"),
+                new SkipNotEqualVxVyInstruction());
         // Annn - LD I, addr
-        this.instructionMap.put(Pattern.compile("^A[0-9a-fA-F]{3}$"), new LoadINNNInstruction());
+        this.instructionMap.put(Pattern.compile("^A[0-9a-fA-F]{3}$"),
+                new LoadINNNInstruction());
         // Bnnn - JP V0, addr
-        this.instructionMap.put(Pattern.compile("^B[0-9a-fA-F]{3}$"), new JumpV0NNNInstruction());
+        this.instructionMap.put(Pattern.compile("^B[0-9a-fA-F]{3}$"),
+                new JumpV0NNNInstruction());
         // Cxkk - RND Vx, byte
-        this.instructionMap.put(Pattern.compile("^C[0-9a-fA-F]{3}$"), new RandomVxKKInstruction());
+        this.instructionMap.put(Pattern.compile("^C[0-9a-fA-F]{3}$"),
+                new RandomVxKKInstruction());
         // Dxyn - DRW Vx, Vy, nibble
-        this.instructionMap.put(Pattern.compile("^D[0-9a-fA-F]{3}$"), new DrawVxVyNibbleInstruction());
+        this.instructionMap.put(Pattern.compile("^D[0-9a-fA-F]{3}$"),
+                new DrawVxVyNibbleInstruction());
         // Ex9E - SKP Vx
-        this.instructionMap.put(Pattern.compile("^E[0-9a-fA-F]{1}9E$"), new SkipIfKeyDownInstruction());
+        this.instructionMap.put(Pattern.compile("^E[0-9a-fA-F]{1}9E$"),
+                new SkipIfKeyDownInstruction());
         // ExA1 - SKNP Vx
-        this.instructionMap.put(Pattern.compile("^E[0-9a-fA-F]{1}A1$"), new SkipIfKeyUpInstruction());
+        this.instructionMap.put(Pattern.compile("^E[0-9a-fA-F]{1}A1$"),
+                new SkipIfKeyUpInstruction());
         // Fx07 - LD Vx, DT
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}07$"), new LoadVxDTInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}07$"),
+                new LoadVxDTInstruction());
         // Fx0A - LD Vx, K
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}0A$"), new WaitKeyDownInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}0A$"),
+                new WaitKeyDownInstruction());
         // Fx15 - LD DT, Vx
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}15$"), new LoadDTVxInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}15$"),
+                new LoadDTVxInstruction());
         // Fx18 - LD ST, Vx
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}18$"), new LoadSTVxInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}18$"),
+                new LoadSTVxInstruction());
         // Fx1E - ADD I, Vx
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}1E$"), new AddIVxInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}1E$"),
+                new AddIVxInstruction());
         // Fx29 - LD F, Vx
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}29$"), new LoadFontVxInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}29$"),
+                new LoadFontVxInstruction());
         // Fx33 - LD B, Vx
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}33$"), new LoadBCDInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}33$"),
+                new LoadBCDInstruction());
         // Fx55 - LD [I], Vx
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}55$"), new LoadIVxInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}55$"),
+                new LoadIVxInstruction());
         // Fx65 - LD Vx, [I]
-        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}65$"), new LoadVxIInstruction());
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}65$"),
+                new LoadVxIInstruction());
+        // 00FE - Disable extended screen mode.
+        this.instructionMap.put(Pattern.compile("^00FE$"),
+                new DisableExtendedModeInstruction());
+        // 00FF - Enable extended screen mode for full-screen graphics.
+        this.instructionMap.put(Pattern.compile("^00FF$"),
+                new EnableExtendedModeInstruction());
+        // 00FD - Exit CHIP interpreter.
+        this.instructionMap.put(Pattern.compile("^00FD$"),
+                new ExitInstruction());
+        // 00CN - Scroll display N lines down.
+        this.instructionMap.put(Pattern.compile("^00C[0-9a-fA-F]{1}$"),
+                new ScrollDownInstruction());
+        // 00FB - Scroll display 4 pixels right.
+        this.instructionMap.put(Pattern.compile("^00FB$"),
+                new ScrollRightInstruction());
+        // 00FC - Scroll display 4 pixels left.
+        this.instructionMap.put(Pattern.compile("^00FC$"),
+                new ScrollLeftInstruction());
+        // Fx30 - LD extended F, Vx
+        this.instructionMap.put(Pattern.compile("^F[0-9a-fA-F]{1}30$"),
+                new LoadExtendedFontVxInstruction());
     }
 
     /**
