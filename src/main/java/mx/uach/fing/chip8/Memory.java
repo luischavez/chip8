@@ -223,15 +223,15 @@ public class Memory {
         0x20, //   #  
         0xC0, // ##   
 
-        0x08, 0x00, //     #    
-        0x08, 0x00, //     #    
-        0x14, 0x00, //    # #   
-        0x14, 0x00, //    # #   
-        0x22, 0x00, //   #   #  
-        0x3E, 0x00, //   #####  
-        0x41, 0x00, //  #     # 
-        0x41, 0x00, //  #     # 
-        0xE3, 0x80, // ###   ###
+        0x08, //     #    
+        0x08, //     #    
+        0x14, //    # #   
+        0x14, //    # #   
+        0x22, //   #   #  
+        0x3E, //   #####  
+        0x41, //  #     # 
+        0x41, //  #     # 
+        0xE3, // ###   ###
 
         0xFC, // ###### 
         0x42, //  #    #
@@ -293,7 +293,7 @@ public class Memory {
     // Inicio de la memoria.
     public static final int MEMORY_INIT = 0x0;
 
-    // Inicio de la fuente, 0x50 (80.
+    // Inicio de la fuente, 0x50 (80).
     public static final int FONT_INIT = 0x50;
 
     // Inicio de la fuente extendida, 0x9C (156).
@@ -324,14 +324,12 @@ public class Memory {
      * Carga la fuente en memoria.
      */
     private void loadFont() {
-
         // Copia la fuente en memoria.
         for (int i = 0; i < FONT.length; i++) {
             this.ram[FONT_INIT + i] = FONT[i] & 0xFF;
         }
         for (int i = 0; i < EXTENDED_FONT.length; i++) {
             this.ram[EXTENDED_FONT_INIT + i] = EXTENDED_FONT[i] & 0xFFFF;
-            System.out.println(EXTENDED_FONT_INIT + i);
         }
     }
 
